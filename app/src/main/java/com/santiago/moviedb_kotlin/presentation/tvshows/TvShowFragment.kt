@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.santiago.moviedb_kotlin.R
 import com.santiago.moviedb_kotlin.databinding.FragmentTvShowsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TvShowFragment: Fragment() {
 
     private lateinit var binding: FragmentTvShowsBinding
+    lateinit var adapter: TvShowsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTvShowsBinding.inflate(inflater, container, false)
