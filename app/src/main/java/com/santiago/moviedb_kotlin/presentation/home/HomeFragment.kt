@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import com.santiago.moviedb_kotlin.R
 import com.santiago.moviedb_kotlin.databinding.FragmentHomeBinding
 import com.santiago.moviedb_kotlin.domain.models.Movie
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +35,7 @@ class HomeFragment: Fragment() {
     }
 
     private fun setUpMoviesObserver() {
-        homeViewModel.moviesLiveData.observe(requireActivity(), {
+        homeViewModel.moviesLiveData.observe(requireActivity(), Observer {
             if(it != null && it.isNotEmpty()) {
                 adapter.addMovies(it)
             }
@@ -42,7 +45,11 @@ class HomeFragment: Fragment() {
     private fun setUpMoviesAdapter() {
         adapter = MoviesAdapter(requireActivity(), object : MoviesAdapter.Listener {
             override fun onMovieClicked(movie: Movie) {
-                Log.d("rastro", "Go to detail from Movie: ${movie.title}")
+                val bundle = Bundle().apply {
+                    putInt("itemType", 0)
+                    putInt("itemId", movie.id)
+                }
+                binding.moviesRecyclerView.findNavController().navigate(R.id.action_fragmentHome_to_detailFragment, bundle)
             }
         })
         binding.moviesRecyclerView.adapter = adapter
