@@ -6,11 +6,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.santiago.moviedb_kotlin.R
 import com.santiago.moviedb_kotlin.databinding.ActivityMainBinding
+import com.santiago.moviedb_kotlin.domain.models.Movie
+import com.santiago.moviedb_kotlin.domain.models.TvShow
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    val movies = ArrayList<Movie>()
+    val tvShows = ArrayList<TvShow>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

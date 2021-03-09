@@ -5,8 +5,6 @@ import com.santiago.moviedb_kotlin.domain.models.DataMapper
 import com.santiago.moviedb_kotlin.domain.models.Movie
 import javax.inject.Inject
 
-class GetLocalPopularMovies @Inject constructor(private val repository: MoviesRepository) {
-    suspend fun execute(): ArrayList<Movie> = ArrayList(repository.getLocalPopularMovies().map {
-        DataMapper.Movies.fromLocal(it)
-    })
+class SaveLocalMovies @Inject constructor(private val repository: MoviesRepository) {
+    suspend fun execute(movies: ArrayList<Movie>) = repository.saveLocalMovies(ArrayList(movies.map { DataMapper.Movies.toLocal(it) }))
 }

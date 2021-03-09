@@ -10,8 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.santiago.moviedb_kotlin.R
+import com.santiago.moviedb_kotlin.databinding.ContentLoaderBinding
 import com.santiago.moviedb_kotlin.databinding.FragmentHomeBinding
 import com.santiago.moviedb_kotlin.domain.models.Movie
+import com.santiago.moviedb_kotlin.presentation.MainActivity
+import com.santiago.moviedb_kotlin.utils.ViewHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,26 +22,39 @@ class HomeFragment: Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var loaderBinding: ContentLoaderBinding
     private lateinit var adapter: MoviesAdapter
+    private lateinit var parent : MainActivity
+    private var isLoading = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        loaderBinding = ContentLoaderBinding.bind(binding.root)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        parent = requireActivity() as MainActivity
         setUpMoviesAdapter()
         setUpMoviesObserver()
-        homeViewModel.getPopularMovies()
+
+        if(parent.movies.isEmpty()) {
+            isLoading(true)
+            homeViewModel.getPopularMovies()
+        } else {
+            adapter.addMovies(parent.movies)
+        }
     }
 
     private fun setUpMoviesObserver() {
         homeViewModel.moviesLiveData.observe(requireActivity(), Observer {
             if(it != null && it.isNotEmpty()) {
+                parent.movies.addAll(it)
                 adapter.addMovies(it)
             }
+            isLoading(false)
+            isLoadingMore(false)
         })
     }
 
@@ -53,5 +69,23 @@ class HomeFragment: Fragment() {
             }
         })
         binding.moviesRecyclerView.adapter = adapter
+
+        ViewHelper.setLoadMoreListener(binding.moviesRecyclerView) {
+            if(!isLoading) {
+                isLoadingMore(true)
+                //TODO load next page
+            }
+
+        }
+    }
+
+    private fun isLoading(isLoading: Boolean) {
+        this.isLoading = isLoading
+        loaderBinding.loaderContainer.visibility = if(isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun isLoadingMore(isLoadingMore: Boolean) {
+        isLoading = isLoadingMore
+        binding.loadingMoreBar.visibility = if(isLoadingMore) View.VISIBLE else View.GONE
     }
 }
