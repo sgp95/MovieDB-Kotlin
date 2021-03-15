@@ -1,6 +1,7 @@
 package com.santiago.moviedb_kotlin.presentation.tvshows
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,14 @@ class TvShowFragment: Fragment() {
             }
             isLoading(false)
             isLoadingMore(false)
+
+            ViewHelper.setLoadMoreListener(binding.tvShowsRecyclerView, parent.tvShows.size-1) {
+                if(!isLoading) {
+                    isLoadingMore(true)
+                    Log.d("rastro", "Load more tvShows")
+                }
+
+            }
         })
     }
 
@@ -68,14 +77,6 @@ class TvShowFragment: Fragment() {
             }
         })
         binding.tvShowsRecyclerView.adapter = adapter
-
-        ViewHelper.setLoadMoreListener(binding.tvShowsRecyclerView) {
-            if(!isLoading) {
-                isLoadingMore(true)
-                //TODO load next page
-            }
-
-        }
     }
 
     private fun isLoading(isLoading: Boolean) {

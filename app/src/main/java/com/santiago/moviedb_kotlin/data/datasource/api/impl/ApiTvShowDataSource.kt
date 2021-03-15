@@ -11,5 +11,5 @@ class ApiTvShowDataSource @Inject constructor(private val services: Services): R
         services.requestPopularTvShows(BuildConfig.API_KEY).results
 
     override suspend fun getTvShowDetail(id: Int) =
-        services.requestTvShow(BuildConfig.API_KEY, id)
+        services.requestTvShow(id, BuildConfig.API_KEY)
 }

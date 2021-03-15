@@ -41,7 +41,7 @@ class HomeFragment: Fragment() {
 
         if(parent.movies.isEmpty()) {
             isLoading(true)
-            homeViewModel.getPopularMovies()
+            homeViewModel.getRemotePopularMovies()
         } else {
             adapter.addMovies(parent.movies)
         }
@@ -55,6 +55,13 @@ class HomeFragment: Fragment() {
             }
             isLoading(false)
             isLoadingMore(false)
+
+            ViewHelper.setLoadMoreListener(binding.moviesRecyclerView, parent.movies.size-1) {
+                if(!isLoading) {
+                    isLoadingMore(true)
+                    Log.d("rastro", "Load more movies")
+                }
+            }
         })
     }
 
@@ -69,14 +76,6 @@ class HomeFragment: Fragment() {
             }
         })
         binding.moviesRecyclerView.adapter = adapter
-
-        ViewHelper.setLoadMoreListener(binding.moviesRecyclerView) {
-            if(!isLoading) {
-                isLoadingMore(true)
-                //TODO load next page
-            }
-
-        }
     }
 
     private fun isLoading(isLoading: Boolean) {

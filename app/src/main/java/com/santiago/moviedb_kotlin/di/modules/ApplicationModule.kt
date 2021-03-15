@@ -11,6 +11,8 @@ import com.santiago.moviedb_kotlin.data.datasource.interfaces.LocalTvShowsDataSo
 import com.santiago.moviedb_kotlin.data.datasource.interfaces.RemoteMoviesDataSource
 import com.santiago.moviedb_kotlin.data.datasource.interfaces.RemoteTvShowsDataSource
 import com.santiago.moviedb_kotlin.data.datasource.room.AppDatabase
+import com.santiago.moviedb_kotlin.data.datasource.room.dao.MoviesDao
+import com.santiago.moviedb_kotlin.data.datasource.room.dao.TvShowDao
 import com.santiago.moviedb_kotlin.data.datasource.room.impl.RoomMoviesDataSource
 import com.santiago.moviedb_kotlin.data.datasource.room.impl.RoomTvShowsDataSource
 import dagger.Module
@@ -24,6 +26,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ApplicationModule {
 
+    // solve issue with this: https://medium.com/@svvashishtha/using-room-with-hilt-cb57a1bc32f
     /* Retrofit */
     @Provides
     @Singleton
@@ -42,6 +45,14 @@ class ApplicationModule {
     @Singleton
     fun providesRoomDatabase(@ApplicationContext appContext: Context): AppDatabase =
         Room.databaseBuilder(appContext, AppDatabase::class.java, "MovieApp_Database").build()
+
+    @Provides
+    @Singleton
+    fun providesMoviesDao(appDatabase: AppDatabase): MoviesDao = appDatabase.moviesDao()
+
+    @Provides
+    @Singleton
+    fun providesTvShowDao(appDatabase: AppDatabase): TvShowDao = appDatabase.tvShowDao()
 
     @Provides
     @Singleton

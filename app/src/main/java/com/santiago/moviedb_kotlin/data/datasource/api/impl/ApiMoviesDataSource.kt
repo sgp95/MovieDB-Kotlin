@@ -10,6 +10,6 @@ class ApiMoviesDataSource @Inject constructor(private val services: Services): R
         services.requestPopularMovies(BuildConfig.API_KEY).results
 
     override suspend fun getMovieDetail(id: Int) =
-        services.requestMovie(BuildConfig.API_KEY, id)
+        services.requestMovie(id, BuildConfig.API_KEY)
 
 }

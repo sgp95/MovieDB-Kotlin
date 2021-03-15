@@ -15,8 +15,8 @@ interface Services {
 
     @GET(Endpoints.MOVIE_DETAIL)
     suspend fun requestMovie(
-        @Query("api_key") apiKey: String,
-        @Path("movie_id") movieId: Int
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
     ): MovieResponse
 
     @GET(Endpoints.POPULAR_TV_SHOW)
@@ -24,7 +24,7 @@ interface Services {
 
     @GET(Endpoints.TV_SHOW_DETAIL)
     suspend fun requestTvShow(
-            @Query("api_key") apiKey: String,
-            @Path("tv_id") tvShowId: Int
+        @Path("tv_id") tvShowId: Int,
+        @Query("api_key") apiKey: String
     ): TvShowResponse
 }

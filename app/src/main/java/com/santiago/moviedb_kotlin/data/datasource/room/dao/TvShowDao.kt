@@ -8,11 +8,14 @@ import com.santiago.moviedb_kotlin.data.datasource.room.entities.TvShowEntity
 @Dao
 interface TvShowDao {
     @Query("SELECT * FROM tvshowentity")
-    suspend fun getAll(): ArrayList<TvShowEntity>
+    suspend fun getAll(): List<TvShowEntity>
 
     @Query("SELECT * FROM tvshowentity WHERE id = :tvShowId")
     suspend fun getTvShow(tvShowId: Int): TvShowEntity
 
     @Insert
-    suspend fun insertAll(movies: ArrayList<TvShowEntity>)
+    suspend fun insertAll(movies: List<TvShowEntity>)
+
+    @Query("DELETE FROM tvshowentity")
+    suspend fun deleteAll()
 }

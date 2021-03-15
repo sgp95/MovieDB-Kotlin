@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.santiago.moviedb_kotlin.presentation.detail.DetailFragment"
+        android:name="com.santiago.moviedb_kotlin.presentation.detail.MovieDetailFragment"
         android:label="DetailFragment"
         tools:layout="@layout/fragment_detail">
         <argument
